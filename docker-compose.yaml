@@ -1,0 +1,58 @@
+services:
+  back:
+    build:
+      context: ./arcadia35back
+      dockerfile: Dockerfileback
+    ports:
+      - "8000:8000"  
+    volumes:
+      - ./arcadia35back:/var/www/html
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: true
+      DATABASE_URL: "mysql://admin:Rugbydu35@db:3306/arcadia35"
+      OPENREDIS_URL: "redis://redis:6379"
+    depends_on:
+      - db
+      - redis  
+    networks:
+      - app-network
+
+  db:
+    image: mariadb:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Rugbydu35
+      MYSQL_DATABASE: arcadia35
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: Rugbydu35
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-network
+
+  front:
+    build:
+      context: ./arcadia35front  
+      dockerfile: Dockerfile-front
+    ports:
+      - "3000:3000" 
+    volumes:
+      - ./arcadia35front:/usr/src/app  
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"  
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:

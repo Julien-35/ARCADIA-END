@@ -1,0 +1,6 @@
+[submodule "arcadia35front"]
+	path = arcadia35front
+	url = https://github.com/Julien-35/arcadia35front.git
+[submodule "arcadia35back"]
+	path = arcadia35back
+	url = https://github.com/Julien-35/arcadia35back.git
