@@ -7,6 +7,8 @@ services:
       - "8000:8000"  
     volumes:
       - ./arcadia35back:/var/www/html
+      - ./arcadia35back/vendor:/var/www/html/vendor
+      - ./arcadia35back/var:/var/www/html/var
     environment:
       APP_ENV: dev
       APP_DEBUG: true
