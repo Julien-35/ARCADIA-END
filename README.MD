@@ -11,7 +11,9 @@ Avant de commencer, assurez-vous d'avoir les logiciels suivants installés :
 ## Structure du projet
 - **arcadia35back** : Contient le code back-end du projet en Symfony.
 - **arcadia35front** : Contient le code front-end du projet HTML / Bootstrap / Javascript / SCSS.
-- **docker-compose.yml** : Fichier de configuration pour Docker Compose qui orchestre les conteneurs.
+
+Vous devrez créer le dossier suivant : 
+- **docker-compose.yaml** : Fichier de configuration pour Docker Compose qui orchestre les conteneurs. 
 
 ## Installation
 
@@ -23,8 +25,9 @@ Avant de commencer, assurez-vous d'avoir les logiciels suivants installés :
   - cd arcadia35
 
 ### 2. Construire et démarrer les conteneurs Docker
-    Dans le répertoire racine du projet (contenant le fichier docker-compose.yml), exécutez la commande suivante pour construire et lancer les conteneurs :
-
+    Dans le répertoire racine du projet (contenant le fichier docker-compose.yml)vérifier si ce dernier est correctement importer
+    Si oui, exécutez la commande suivante pour construire et lancer les conteneurs :
+    Si non, rapprochez-vous de l'étape 4 Créer le fichier docker-compose.yaml
     docker-compose up --build
 
     Cette commande va :
@@ -39,7 +42,7 @@ Avant de commencer, assurez-vous d'avoir les logiciels suivants installés :
     Front-end  : http://localhost:3000
     Services Docker
 
-    Le fichier docker-compose.yml configure plusieurs services Docker :
+    Le fichier docker-compose.yaml configure plusieurs services Docker :
 
 - **Service back**
     Le back-end est une application Symfony configurée pour se connecter à MariaDB et Redis.
@@ -81,6 +84,7 @@ Avant de commencer, assurez-vous d'avoir les logiciels suivants installés :
         Réseau : app-network pour permettre aux services de communiquer entre eux.
         Volume : db_data pour persister les données de la base de données MariaDB.
 
+### 4. Créer le fichier docker-compose.yaml
 -**Exemple d'un fichier docker-compose avec les services back, db, redis et front**
 services:
   back:
