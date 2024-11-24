@@ -1,6 +1,7 @@
 # Arcadia35 Project
 
-Ce projet est une application web composée d’un back-end en Symfony et d’un front-end, utilisant une base de données MariaDB et un cache Redis. Le projet est entièrement containerisé avec Docker pour faciliter le déploiement et l'exécution.
+Ce projet est une application web composée d’un back-end en Symfony et d’un front-end, utilisant une base de données MariaDB et un cache Redis. 
+Le projet est entièrement containerisé avec Docker pour faciliter le déploiement et l'exécution.
 
 ## Prérequis
 Avant de commencer, assurez-vous d'avoir les logiciels suivants installés :
@@ -80,6 +81,67 @@ Avant de commencer, assurez-vous d'avoir les logiciels suivants installés :
         Réseau : app-network pour permettre aux services de communiquer entre eux.
         Volume : db_data pour persister les données de la base de données MariaDB.
 
+-**Exemple d'un fichier docker-compose avec les services back, db, redis et front**
+services:
+  back:
+    build:
+      context: ./arcadia35back
+      dockerfile: Dockerfileback
+    ports:
+      - "8000:8000"  
+    volumes:
+      - ./arcadia35back:/var/www/html
+      - ./arcadia35back/vendor:/var/www/html/vendor
+      - ./arcadia35back/var:/var/www/html/var
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: true
+      DATABASE_URL: "mysql://<VotreNomutilisateur>:<VotreMotDePasse>@db:3306/<NomDeLaBDD> "
+      OPENREDIS_URL: "redis://redis:6379"
+    depends_on:
+      - db
+      - redis  
+    networks:
+      - app-network
+    
+  db:
+    image: mariadb:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: <VotreMotDePasse>
+      MYSQL_DATABASE:  <NomDeLaBDD> 
+      MYSQL_USER: <VotreNomutilisateur> 
+      MYSQL_PASSWORD: <VotreMotDePasse>
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"  
+    networks:
+      - app-network
+
+  front:
+    build:
+      context: ./arcadia35front  
+      dockerfile: Dockerfile-front
+    ports:
+      - "3000:3000" 
+    volumes:
+      - ./arcadia35front:/usr/src/app  
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:
 
 - **Quelques commandes docker**
     Arrêter les conteneurs
